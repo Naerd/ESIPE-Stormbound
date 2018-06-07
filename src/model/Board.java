@@ -1,5 +1,13 @@
-package stormboundESIPE;
+package model;
 
+/**
+ * 
+ * Base à détruire.
+ * 
+ * @author Axel ROSTAGNY
+ * @author Guillaume GAUJAC
+ *
+ */
 public class Board {
 	private Square[][] board;
 	private Base j1;

@@ -1,4 +1,4 @@
-package stormboundESIPE;
+package model;
 
 /**
  * 
@@ -23,7 +23,6 @@ public class Base {
 		this.health -= val;
 	}
 
-	/** TODO : **/
 	public String toString() {
 		if (this.health == 10) {
 			return " ___________________________________________________________\n" + "|___________________________| "

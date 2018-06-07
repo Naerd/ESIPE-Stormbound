@@ -1,4 +1,4 @@
-package stormboundESIPE;
+package model;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,8 @@ public enum Player {
 
 	private ArrayList<Card> deck;
 	private ArrayList<Card> hand;
-	private Base base;
+	private int health;
+	private int mana;
 
 	Player(String name, ArrayList<Card> deck) {
 		this.name = name;
@@ -20,6 +21,8 @@ public enum Player {
 		// soient aléatoire.
 		hand = null;
 		this.deck = deck;
+		this.health = 10;
+		this.mana = 3;
 		// base = initBase();
 	}
 

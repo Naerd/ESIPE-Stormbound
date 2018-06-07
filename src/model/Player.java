@@ -38,9 +38,17 @@ public enum Player {
 		return this.name;
 	}
 
+	public int getHealth() {
+		return health;
+	}
+
 	@Override
 	public String toString() {
 		return getName().toString();
+	}
+
+	public void outch(int damage) {
+		health -= damage;
 	}
 
 }

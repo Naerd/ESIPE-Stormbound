@@ -18,7 +18,7 @@ public class Controller {
 	public void deplacementCard(Square s1, Square s2, Player p1) {
 		// si même joueur alors ok
 		if (p1 == board.getSquare(s1.x, s1.y).) {
-		    return echiquier.deplacerContenusCase(c1, c2);
+		    return board.deplacerContenusCase(c1, c2);
 		}
 		return false;
 	}

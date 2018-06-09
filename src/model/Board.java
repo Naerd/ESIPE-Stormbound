@@ -1,52 +1,65 @@
-package stormboundESIPE;
+package model;
 
+import model.cards.Cards;
+
+/**
+ * 
+ * Base à détruire.
+ * 
+ * @author Axel ROSTAGNY
+ * @author Guillaume GAUJAC
+ *
+ */
 public class Board {
 	private Square[][] board;
-	private Base j1;
-	private Base j2;
+	private Player p1;
+	private Player p2;
 
 	public Board() {
-		this.j1 = new Base();
-		this.j2 = new Base();
-		this.board = new Square[7][4];
-		for (int i = 0; i < 7; i++) {
+		this.p1 = Player.PLAYER1;
+		this.p2 = Player.PLAYER2;
+		this.board = new Square[5][4];
+		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 4; j++) {
 				board[i][j] = new Square(i, j);
 			}
 		}
 	}
 
-	public Base getBase(int player) {
-		if (player < 1 && player > 2)
-			throw new IllegalArgumentException("There is only two players : 1 and 2");
-		if (player == 1)
-			return this.j1;
-		else
-			return this.j2;
-	}
-
-	public void display() {
-		System.out.println(this.j2.toString());
-		for (int i = 1; i < 6; i++) {
-			System.out.print("|");
-			System.out.println("___________________________________________________________");
-			for (int j = 0; j < 4; j++) {
-				System.out.print(this.board[i][j].toString());
-			}
-			System.out.println("|" + i);
+	/**
+	 * Return hp of the player
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public Player getPlayer(int player) {
+		if (player > 2)
+			throw new ArrayIndexOutOfBoundsException(player + " is out of bound");
+		if (player < 1) {
+			throw new IllegalArgumentException(player + " is to short");
 		}
-		System.out.println(this.j1.toString());
+		if (player == 1)
+			return this.p1;
+		else
+			return this.p2;
 	}
 
-	public boolean setUnit(int x, int y, Card card, Player p) {
+	/**
+	 * @param x
+	 * @param y
+	 * @param card
+	 * @param p
+	 * @return
+	 */
+	public boolean setUnit(int x, int y, Cards card, Player p) {
 		if (this.board[x][y].getCard() != null) {
-			System.out.println("Cette case est deja utilis�e !");
+			System.out.println("Cette case est deja utilisee !");
 			return false;
 		} else if (!isEnnemyFront(x, y, p) && !isEnnemyLeft(x, y, p) && !isEnnemyRight(x, y, p)) {
 			this.board[x][y].addCard(card);
 			return true;
 		} else {
-			if (p.getName() == "A" && (y == 0 || y == 1)) {
+			if (p == Player.PLAYER1 && (y == 0 || y == 1)) {
 				if (isEnnemyRight(x, y, p)) {
 
 				}
@@ -57,6 +70,25 @@ public class Board {
 		}
 	}
 
+	/**
+	 * @return
+	 */
+	public Player getP1() {
+		return p1;
+	}
+
+	/**
+	 * @return
+	 */
+	public Player getP2() {
+		return p2;
+	}
+
+	/**
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public boolean isInBoard(int x, int y) {
 		if (x >= 0 && x < 7) {
 			if (y >= 0 && y < 4)
@@ -67,8 +99,18 @@ public class Board {
 			return false;
 	}
 
+	public Square getSquare(int x, int y) {
+		return board[x][y];
+	}
+
+	/**
+	 * @param x
+	 * @param y
+	 * @param p
+	 * @return
+	 */
 	public boolean isEnnemyLeft(int x, int y, Player p) {
-		if (p.getName() == "A") {
+		if (p == Player.PLAYER1) {
 			if (isInBoard(x, y - 1) && this.board[x][y - 1].getCard() != null) {
 				return true;
 			} else
@@ -81,8 +123,14 @@ public class Board {
 		}
 	}
 
+	/**
+	 * @param x
+	 * @param y
+	 * @param p
+	 * @return
+	 */
 	public boolean isEnnemyRight(int x, int y, Player p) {
-		if (p.getName() == "A") {
+		if (p == Player.PLAYER1) {
 			if (isInBoard(x, y + 1) && this.board[x][y + 1].getCard() != null) {
 				return true;
 			} else
@@ -95,8 +143,14 @@ public class Board {
 		}
 	}
 
+	/**
+	 * @param x
+	 * @param y
+	 * @param p
+	 * @return
+	 */
 	public boolean isEnnemyFront(int x, int y, Player p) {
-		if (p.getName() == "A") {
+		if (p == p.PLAYER1) {
 			if (isInBoard(x - 1, y) && this.board[x - 1][y].getCard() != null) {
 				return true;
 			} else

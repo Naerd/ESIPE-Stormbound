@@ -1,6 +1,8 @@
-package stormboundESIPE;
+package model;
 
 import java.util.ArrayList;
+
+import model.cards.Cards;
 
 public enum Player {
 
@@ -10,16 +12,19 @@ public enum Player {
 
 	// private final String color;
 
-	private ArrayList<Card> deck;
-	private ArrayList<Card> hand;
-	private Base base;
+	private ArrayList<Cards> deck;
+	private ArrayList<Cards> hand;
+	private int health;
+	private int mana;
 
-	Player(String name, ArrayList<Card> deck) {
+	Player(String name, ArrayList<Cards> deck) {
 		this.name = name;
 		// TODO : Initialiser dans le modèle en début de game. + faire en sorte qu'ils
 		// soient aléatoire.
 		hand = null;
 		this.deck = deck;
+		this.health = 10;
+		this.mana = 3;
 		// base = initBase();
 	}
 
@@ -35,9 +40,17 @@ public enum Player {
 		return this.name;
 	}
 
+	public int getHealth() {
+		return health;
+	}
+
 	@Override
 	public String toString() {
 		return getName().toString();
+	}
+
+	public void outch(int damage) {
+		health -= damage;
 	}
 
 }

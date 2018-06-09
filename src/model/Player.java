@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import model.cards.Cards;
+
 public enum Player {
 
 	PLAYER1("Player 1", null), PLAYER2("Player 2", null);
@@ -10,12 +12,12 @@ public enum Player {
 
 	// private final String color;
 
-	private ArrayList<Card> deck;
-	private ArrayList<Card> hand;
+	private ArrayList<Cards> deck;
+	private ArrayList<Cards> hand;
 	private int health;
 	private int mana;
 
-	Player(String name, ArrayList<Card> deck) {
+	Player(String name, ArrayList<Cards> deck) {
 		this.name = name;
 		// TODO : Initialiser dans le modèle en début de game. + faire en sorte qu'ils
 		// soient aléatoire.

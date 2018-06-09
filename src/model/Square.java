@@ -1,9 +1,11 @@
 package model;
 
-class Square {
+import model.cards.Cards;
+
+public class Square {
 	private final int x;
 	private final int y;
-	private Card card;
+	private Cards card;
 
 	public Square(int x, int y) {
 		this.x = x;
@@ -19,11 +21,11 @@ class Square {
 		}
 	}
 
-	public Card getCard() {
+	public Cards getCard() {
 		return this.card;
 	}
 
-	public void addCard(Card card) {
+	public void addCard(Cards card) {
 		this.card = card;
 	}
 

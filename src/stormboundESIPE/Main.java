@@ -1,8 +1,10 @@
 package stormboundESIPE;
 
+import javax.smartcardio.Card;
+
 import model.Board;
-import model.Card;
 import model.Player;
+import model.cards.Cards;
 import view.View;
 
 public class Main {
@@ -31,7 +33,7 @@ public class Main {
 		// }
 
 		vue.display(board);
-		Card c2 = Card.A;
+		Cards c2 = Card.A;
 		board.setUnit(4, 2, c2, p2);
 		board.getPlayer(1).outch(3);
 		vue.display(board);

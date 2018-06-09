@@ -1,5 +1,7 @@
 package model;
 
+import model.cards.Cards;
+
 /**
  * 
  * Base à détruire.
@@ -16,8 +18,8 @@ public class Board {
 	public Board() {
 		this.p1 = Player.PLAYER1;
 		this.p2 = Player.PLAYER2;
-		this.board = new Square[7][4];
-		for (int i = 0; i < 7; i++) {
+		this.board = new Square[5][4];
+		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 4; j++) {
 				board[i][j] = new Square(i, j);
 			}
@@ -49,7 +51,7 @@ public class Board {
 	 * @param p
 	 * @return
 	 */
-	public boolean setUnit(int x, int y, Card card, Player p) {
+	public boolean setUnit(int x, int y, Cards card, Player p) {
 		if (this.board[x][y].getCard() != null) {
 			System.out.println("Cette case est deja utilisee !");
 			return false;

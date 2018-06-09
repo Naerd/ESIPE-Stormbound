@@ -1,10 +1,7 @@
 package stormboundESIPE;
 
-import javax.smartcardio.Card;
-
 import model.Board;
 import model.Player;
-import model.cards.Cards;
 import view.View;
 
 public class Main {
@@ -19,25 +16,24 @@ public class Main {
 		Board board = new Board();
 
 		boolean isOver = false;
-		boolean tour = true;
+		boolean roundP1 = true;
 		boolean valideDeplacement;
 
-		// while (!isOver) {
-		// if (tour) {
-		// /* A chaque tour augmenté le mana */
-		// courant = p1;
-		// } else {
-		// courant = p2;
-		// }
-		// valideDeplacement = false;
-		// }
+		while (!isOver) {
+			if (courant == p1) {
+				/* A chaque tour augmenté le mana */
+				valideDeplacement = false;
+				courant = p2;
+			} else {
 
+				valideDeplacement = false;
+				courant = p1;
+			}
+		}
 		vue.display(board);
-		Cards c2 = Card.A;
 		board.setUnit(4, 2, c2, p2);
-		board.getPlayer(1).outch(3);
+		// board.getPlayer(1).outch(3);
 		vue.display(board);
-		Card c = Card.B;
 		board.setUnit(5, 3, c, p1);
 		vue.display(board);
 

@@ -1,6 +1,7 @@
 package model;
 
 import model.cards.Cards;
+import model.cards.Standard;
 
 /**
  * 
@@ -26,23 +27,23 @@ public class Board {
 		}
 	}
 
-	/**
-	 * Return hp of the player
-	 * 
-	 * @param player
-	 * @return
-	 */
-	public Player getPlayer(int player) {
-		if (player > 2)
-			throw new ArrayIndexOutOfBoundsException(player + " is out of bound");
-		if (player < 1) {
-			throw new IllegalArgumentException(player + " is to short");
-		}
-		if (player == 1)
-			return this.p1;
-		else
-			return this.p2;
-	}
+	// /**
+	// * Return hp of the player
+	// *
+	// * @param player
+	// * @return
+	// */
+	// public Player getPlayer(int player) {
+	// if (player > 2)
+	// throw new ArrayIndexOutOfBoundsException(player + " is out of bound");
+	// if (player < 1) {
+	// throw new IllegalArgumentException(player + " is to short");
+	// }
+	// if (player == 1)
+	// return this.p1;
+	// else
+	// return this.p2;
+	// }
 
 	/**
 	 * @param x
@@ -51,38 +52,49 @@ public class Board {
 	 * @param p
 	 * @return
 	 */
-	public boolean setUnit(int x, int y, Cards card, Player p) {
-		if (this.board[x][y].getCard() != null) {
-			System.out.println("Cette case est deja utilisee !");
-			return false;
-		} else if (!isEnnemyFront(x, y, p) && !isEnnemyLeft(x, y, p) && !isEnnemyRight(x, y, p)) {
-			this.board[x][y].addCard(card);
-			return true;
-		} else {
-			if (p == Player.PLAYER1 && (y == 0 || y == 1)) {
-				if (isEnnemyRight(x, y, p)) {
+	public boolean deplacement(Square init, Square obj, Player p) {
+		// if (this.board[x][y].getCard() != null) {
+		// System.out.println("Cette case est deja utilisee !");
+		// return false;
+		// } else if (!isEnnemyFront(x, y, p) && !isEnnemyLeft(x, y, p) &&
+		// !isEnnemyRight(x, y, p)) {
+		// this.board[x][y].addCard(card);
+		// return true;
+		// } else {
+		// if (p == Player.PLAYER1 && (y == 0 || y == 1)) {
+		// if (isEnnemyRight(x, y, p)) {
+		//
+		// }
+		// }
+		// this.board[x][y].addCard(card);
+		// return true;
 
-				}
+		if (this.getSquare(obj.getX(), obj.getY()))
 
+			if (this.getSquare(obj.getX(), obj.getY()).getPlayer() == p) {
+				System.out.println("Vous êtes déjà là");
 			}
-			this.board[x][y].addCard(card);
-			return true;
-		}
+
 	}
 
-	/**
-	 * @return
-	 */
-	public Player getP1() {
-		return p1;
+	public void attack(Standard c1, Standard c2) {
+		/* Tester si trop éloigné */
+		if(c2.getStrength())
 	}
 
-	/**
-	 * @return
-	 */
-	public Player getP2() {
-		return p2;
-	}
+	// /**
+	// * @return
+	// */
+	// public Player getP1() {
+	// return p1;
+	// }
+	//
+	// /**
+	// * @return
+	// */
+	// public Player getP2() {
+	// return p2;
+	// }
 
 	/**
 	 * @param x
@@ -90,7 +102,8 @@ public class Board {
 	 * @return
 	 */
 	public boolean isInBoard(int x, int y) {
-		if (x >= 0 && x < 7) {
+		/** TODO : le faire avec les excpetions */
+		if (x >= 0 && x < 5) {
 			if (y >= 0 && y < 4)
 				return true;
 			else
@@ -101,6 +114,10 @@ public class Board {
 
 	public Square getSquare(int x, int y) {
 		return board[x][y];
+	}
+
+	public Player getPlayerOnSquare(Square square) {
+		return board[square.getX()][square.getY()].getPlayer();
 	}
 
 	/**

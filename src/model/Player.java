@@ -6,7 +6,7 @@ import model.cards.Cards;
 
 public enum Player {
 
-	PLAYER1("Player 1", null), PLAYER2("Player 2", null);
+	PLAYER1("A", null), PLAYER2("B", null);
 
 	private final String name;
 

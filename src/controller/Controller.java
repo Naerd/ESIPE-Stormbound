@@ -1,8 +1,8 @@
 package controller;
 
 import model.Board;
+import model.Player;
 import model.Square;
-import model.cards.Cards;
 import view.View;
 
 public class Controller {
@@ -15,12 +15,11 @@ public class Controller {
 		this.view = view;
 	}
 
-	public void deplacementCard(Square s1, Square s2, Player p1) {
+	public boolean deplacementCard(Square s1, Square s2, Player p) {
 		// si même joueur alors ok
-		if (p1 == board.getSquare(s1.x, s1.y).) {
-		    return board.deplacerContenusCase(c1, c2);
+		if (p == board.getSquare(s1.getX(), s1.getY()).getPlayer()) {
+			return board.setUnit(,);
 		}
 		return false;
 	}
-
 }

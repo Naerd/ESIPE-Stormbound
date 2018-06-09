@@ -1,8 +1,6 @@
-package model.cards.standard;
+package model.cards;
 
 import java.util.Objects;
-
-import model.cards.Cards;
 
 public abstract class Standard implements Cards {
 	// A("A", 2, 0, 1), B("B", 2, 1, 2), C("C", 3, 1, 3), D("D", 4, 0, 3), E("E", 2,

@@ -1,5 +1,7 @@
 package model.cards.standard;
 
+import model.cards.Standard;
+
 public class B extends Standard {
 
 	public B(String name, int strength, int move, int mana) {

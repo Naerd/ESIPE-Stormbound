@@ -118,6 +118,7 @@ public enum Player {
 		for (int numberCard = 0; numberCard < 4; numberCard++) {
 			int indexDeck = rand.nextInt(this.deck.size());
 			hand.add(deck.get(indexDeck));
+			deck.remove(indexDeck);
 		}
 		return hand;
 	};
@@ -149,6 +150,23 @@ public enum Player {
 
 	public ArrayList<Cards> getHand() {
 		return hand;
+	}
+
+	public void exchange(Cards cardHand) {
+		this.deck.add(cardHand);
+		this.hand.remove(cardHand);
+		drawACard();
+	}
+
+	public void drawACard() {
+		if (!this.getDeck().isEmpty()) {
+			int indexDraw = new Random().nextInt(this.getDeck().size());
+			Cards cardDraw = this.getDeck().get(indexDraw);
+			/* Piochement de la carte */
+			this.getHand().add(cardDraw);
+			/* Suppression dans le deck */
+			this.getDeck().remove(cardDraw);
+		}
 	}
 
 }

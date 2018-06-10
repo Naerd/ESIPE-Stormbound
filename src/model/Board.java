@@ -1,5 +1,6 @@
 package model;
 
+import model.cards.Cards;
 import model.cards.Unit;
 
 /**
@@ -44,37 +45,44 @@ public class Board {
 	// return this.p2;
 	// }
 
+	public void deplacement(Square square, int movement) {
+
+		if (movement == 0) {
+			return;
+		}
+		Cards cardOnSquare = square.getCard();
+		;
+		Player playerOnSquare = square.getPlayer();
+		if (playerOnSquare.equals(Player.PLAYER1)) {
+			getSquare(square.getX() - 1, square.getY()).setCard(cardOnSquare);
+			getSquare(square.getX() - 1, square.getY()).setPlayer(playerOnSquare);
+
+			getSquare(square.getX(), square.getY()).setPlayer(null);
+			getSquare(square.getX(), square.getY()).setCard(null);
+		} else {
+			getSquare(square.getX() + 1, square.getY()).setCard(cardOnSquare);
+			getSquare(square.getX() + 1, square.getY()).setPlayer(playerOnSquare);
+
+			getSquare(square.getX(), square.getY()).setPlayer(null);
+			getSquare(square.getX(), square.getY()).setCard(null);
+		}
+	}
+
 	/**
-	 * @param x
-	 * @param y
-	 * @param card
-	 * @param p
 	 * @return
 	 */
-	// public boolean deplacement(Square init, Square obj, Player p) {
-	// if (this.board[x][y].getCard() != null) {
-	// System.out.println("Cette case est deja utilisee !");
-	// return false;
-	// } else if (!isEnnemyFront(x, y, p) && !isEnnemyLeft(x, y, p) &&
-	// !isEnnemyRight(x, y, p)) {
-	// this.board[x][y].addCard(card);
-	// return true;
-	// } else {
-	// if (p == Player.PLAYER1 && (y == 0 || y == 1)) {
-	// if (isEnnemyRight(x, y, p)) {
-	//
-	// }
-	// }
-	// this.board[x][y].addCard(card);
-	// return true;
-
-	// if (this.getSquare(obj.getX(), obj.getY()))
-
-	// if (this.getSquare(obj.getX(), obj.getY()).getPlayer() == p) {
-	// System.out.println("Vous êtes déjà là");
-	// }
-
-	// }
+	public void deplacementEachRound() {
+		for (Square[] squares : board) {
+			for (Square square : squares) {
+				Player playerOnCard = square.getPlayer();
+				/* Ce premier test pour ne pas planter */
+				if (playerOnCard != null) {
+					/* TODO : Gerer les "unit" et les "structures" */
+					// deplacement(square, square.getCard().get);
+				}
+			}
+		}
+	}
 
 	public void attack(Unit c1, Unit c2) {
 		/* Tester si trop éloigné */

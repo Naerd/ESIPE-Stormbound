@@ -13,14 +13,15 @@ public class View {
 	private final Scanner sc = new Scanner(System.in);
 
 	public void window(Board b) {
+		/* TODO : Effacer la console */
 		System.out.println(b.getP2().toString());
 		System.out.print("  ");
 		for (int showNumberCol = 0; showNumberCol < 5; showNumberCol++) {
-			System.out.print(showNumberCol + " ");
+			System.out.print(showNumberCol + "  ");
 		}
 		System.out.print("\n" + "  ");
 		for (int underscore = 0; underscore < 5; underscore++) {
-			System.out.print("- ");
+			System.out.print("-- ");
 		}
 		System.out.println();
 
@@ -36,10 +37,12 @@ public class View {
 				Square square = b.getSquare(line, col);
 				Player p = square.getPlayer();
 				/* TODO : A changer */
-				if (p == Player.PLAYER1) {
-					couleur(square.getCard().toString().substring(0, 1).toUpperCase(), p);
-				} else if (p == Player.PLAYER2) {
-					couleur(square.getCard().toString().substring(0, 1).toLowerCase(), p);
+				if (square.getCard() != null) {
+					if (p.equals(Player.PLAYER1)) {
+						couleur(square.getCard().getName().substring(0, 1).toUpperCase(), p);
+					} else {
+						couleur(square.getCard().getName().substring(0, 1).toLowerCase(), p);
+					}
 				} else {
 					System.out.print("  ");
 				}
@@ -66,34 +69,44 @@ public class View {
 	}
 
 	public int choix(Player player) {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("A votre tour :" + player.getName());
+		System.out.println("\nPlayer :" + player.getName());
+
+		StringBuilder handSB = new StringBuilder();
+		handSB.append("\nHAND :");
+		for (Cards card : player.getDeck())
+			handSB.append(card.toString()).append('\n');
+		System.out.println(handSB.toString());
 		System.out.println("Que souhaitez-vous faire ?");
 		System.out.println("1 - Placer une carte.");
-		System.out.println("2 - Afficher mes stats.");
-		System.out.println("3 - Passer mon tour.");
+		// System.out.println("2 - Afficher mes stats.");
+		System.out.println("2 - Passer mon tour.");
 		int choice = sc.nextInt();
-		while (choice < 1 || choice > 3) {
+		while (choice < 1 || choice > 2) {
 			System.out.println("Erreur. Invalide parametre. Donnez un choix valide.");
-			choice = sc.nextInt();
+			choice = new Scanner(System.in).nextInt();
 		}
 		return choice;
 
 	}
 
-	public Cards selectCardOnHand(Player player) {
+	public Cards selectCardOnHand(Player player) throws IllegalStateException {
+		if (player.getHand().isEmpty()) {
+			throw new IllegalStateException();
+		}
 		StringBuilder selectCardOnHandSB = new StringBuilder();
-		selectCardOnHandSB.append("Les cartes suivante sont disponibles :");
+		selectCardOnHandSB.append("Les cartes suivante sont disponibles :\n");
 		ArrayList<Cards> handTmp = player.getHand();
 		int index = 0;
 		for (Cards card : handTmp) {
 			selectCardOnHandSB.append(index).append('\t').append(card.toString()).append('\n');
 			index++;
 		}
+		selectCardOnHandSB.append('\n');
 		/*
 		 * TODO : Test si aucune main mais presque impossible (seulement si on arrive à
 		 * cours de carte dans notre deck)
 		 */
+		System.out.println(selectCardOnHandSB.toString());
 		int selected = -1;
 		do {
 			selected = sc.nextInt();
@@ -102,7 +115,7 @@ public class View {
 
 	}
 
-	public Square selectSquareOnBoard(Player player, Board board) {
+	public Square selectSquareOnBoard(Player player, Board board) throws IllegalStateException {
 		/* Prendre dans le deck */
 		StringBuilder placeCardSB = new StringBuilder();
 		placeCardSB.append("Où souhaitez-vous placer votre carte ?\nCes colonnes sont libres ([x,y]):\n");
@@ -111,23 +124,27 @@ public class View {
 		if (player == Player.PLAYER1) {
 			line = 4;
 		}
-		ArrayList<Square> free = new ArrayList<Square>();
-		int nbSquareFree = 0;
+		ArrayList<Square> freeSquares = new ArrayList<Square>();
+		int numSquarefreeSquares = 0;
 		for (int col = 0; col < 4; col++) {
 			if (board.getSquare(line, col).getCard() == null) {
-				free.add(new Square(line, col));
-				placeCardSB.append(nbSquareFree).append("- [").append(line).append(',').append(col).append("] ; ");
-				nbSquareFree++;
+				freeSquares.add(new Square(line, col));
+				placeCardSB.append(numSquarefreeSquares).append("- [").append(line).append(',').append(col)
+						.append("] ; ");
+				numSquarefreeSquares++;
 			}
 		}
 		/* TODO: Verifier si on peut placer sinon on passer notre tour (plus haut) */
+		if (numSquarefreeSquares == 0) {
+			throw new IllegalStateException();
+		}
 		placeCardSB.append('\n');
 		System.out.println(placeCardSB.toString());
 		int selected = -1;
 		do {
 			selected = sc.nextInt();
-		} while (selected < 0 || selected > nbSquareFree);
-		return free.get(selected);
+		} while (selected < 0 || selected > numSquarefreeSquares);
+		return freeSquares.get(selected);
 	}
 
 	public void showStats(Player player) {

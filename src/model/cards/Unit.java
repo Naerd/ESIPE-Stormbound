@@ -2,17 +2,11 @@ package model.cards;
 
 public abstract class Unit extends Structure implements Spell {
 
-	private int strength;
 	private final int move;
 
 	public Unit(String name, int strength, int move, int mana) {
-		super(name, mana, strength);
-		this.strength = strength;
+		super(name, strength, mana);
 		this.move = move;
-	}
-
-	public int getStrength() {
-		return this.strength;
 	}
 
 	public int getMove() {
@@ -24,20 +18,20 @@ public abstract class Unit extends Structure implements Spell {
 	// this.mana + ")";
 	// }
 
-	public boolean isDead() {
-		return (this.strength <= 0);
-	}
-
-	public void outch(int dmg) {
-		this.strength -= strength - dmg;
-	}
-
-	@Override
 	public String specificToString() {
-		return super.specificToString() + "\n Move :" + getMove() + " ; Strength : " + getStrength();
+		return "Name : " + super.getName() + " ; Mana : " + super.getMana() + " ; Move :" + getMove() + " ; Strength : "
+				+ super.getStrength();
 	}
 
 	@Override
 	public abstract void effect(Cards c1, Cards c2);
+
+	@Override
+	public String toString() {
+		return specificToString();
+	}
+
+	// @Override
+	// public abstract void effect(Cards c1, Cards c2);
 
 }

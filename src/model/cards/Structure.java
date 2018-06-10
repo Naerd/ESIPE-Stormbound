@@ -10,7 +10,7 @@ public abstract class Structure implements Cards {
 
 	private final String name;
 	private final int mana;
-	private int health;
+	private int strength;
 
 	/**
 	 * Constructor of the structure.
@@ -22,16 +22,23 @@ public abstract class Structure implements Cards {
 	 * @param health
 	 *            Health points.
 	 */
-	public Structure(String name, int mana, int health) {
+	public Structure(String name, int strength, int mana) {
 		this.mana = Objects.requireNonNull(mana);
 		this.name = Objects.requireNonNull(name);
-		this.health = health;
+		this.strength = Objects.requireNonNull(strength);
+	}
 
+	public boolean isDead() {
+		return (this.strength <= 0);
+	}
+
+	public void outch(int dmg) {
+		this.strength -= strength - dmg;
 	}
 
 	@Override
 	public int getMana() {
-		return 0;
+		return this.mana;
 	}
 
 	@Override
@@ -39,14 +46,8 @@ public abstract class Structure implements Cards {
 		return this.name;
 	}
 
-	@Override
-	public String toString() {
-		return specificToString();
-	}
-
-	@Override
-	public String specificToString() {
-		return "Name :" + getName() + " ; Mana : " + getMana();
+	public int getStrength() {
+		return strength;
 	}
 
 }

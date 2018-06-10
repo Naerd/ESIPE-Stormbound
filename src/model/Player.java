@@ -34,13 +34,10 @@ public enum Player {
 
 	Player(String name) {
 		this.name = name;
-		// TODO : Initialiser dans le modèle en début de game. + faire en sorte qu'ils
-		// soient aléatoire.
 		this.deck = initDeck();
 		this.hand = initHand();
 		this.health = 10;
 		this.mana = 3;
-		// base = initBase();
 	}
 
 	private ArrayList<Cards> initDeck() {
@@ -150,6 +147,10 @@ public enum Player {
 
 	public ArrayList<Cards> getHand() {
 		return hand;
+	}
+
+	public void setMana(int mana) {
+		this.mana = mana;
 	}
 
 	public void exchange(Cards cardHand) {

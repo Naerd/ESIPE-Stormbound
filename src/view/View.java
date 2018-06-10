@@ -72,16 +72,16 @@ public class View {
 		System.out.println("\nPlayer :" + player.getName());
 
 		StringBuilder handSB = new StringBuilder();
-		handSB.append("\nHAND :");
-		for (Cards card : player.getDeck())
+		handSB.append("\nHAND :\n");
+		for (Cards card : player.getHand())
 			handSB.append(card.toString()).append('\n');
 		System.out.println(handSB.toString());
 		System.out.println("Que souhaitez-vous faire ?");
 		System.out.println("1 - Placer une carte.");
-		// System.out.println("2 - Afficher mes stats.");
-		System.out.println("2 - Passer mon tour.");
+		System.out.println("2 - Echanger une carte.");
+		System.out.println("3 - Passer mon tour.");
 		int choice = sc.nextInt();
-		while (choice < 1 || choice > 2) {
+		while (choice < 1 || choice > 3) {
 			System.out.println("Erreur. Invalide parametre. Donnez un choix valide.");
 			choice = new Scanner(System.in).nextInt();
 		}
@@ -98,7 +98,8 @@ public class View {
 		ArrayList<Cards> handTmp = player.getHand();
 		int index = 0;
 		for (Cards card : handTmp) {
-			selectCardOnHandSB.append(index).append('\t').append(card.toString()).append('\n');
+			if (card.getMana() <= player.getMana())
+				selectCardOnHandSB.append(index).append('\t').append(card.toString()).append('\n');
 			index++;
 		}
 		selectCardOnHandSB.append('\n');
@@ -147,16 +148,17 @@ public class View {
 		return freeSquares.get(selected);
 	}
 
+	/**
+	 * Obsolete : Les stats doivent être visible dès le départ
+	 * 
+	 * @param player
+	 */
 	public void showStats(Player player) {
 
 		StringBuilder showStatsSB = new StringBuilder();
 		showStatsSB.append(player.toString()).append('\n').append('\n').append("HAND :");
 
-		StringBuilder handSB = new StringBuilder();
-		for (Cards card : player.getDeck())
-			handSB.append(card.toString()).append('\n');
-
-		showStatsSB.append(handSB.toString()).append('\n').append("DECK :");
+		printHand(player);
 
 		StringBuilder deckSB = new StringBuilder();
 		for (Cards card : player.getDeck())
@@ -165,5 +167,26 @@ public class View {
 
 		System.out.println(showStatsSB.toString());
 
+	}
+
+	public void printHand(Player player) {
+		StringBuilder handSB = new StringBuilder();
+		int index = 0;
+		for (Cards card : player.getHand()) {
+			handSB.append(index).append('\t').append(card.toString()).append('\n');
+			index++;
+		}
+		System.out.println(handSB.toString());
+
+	}
+
+	public Cards exchange(Player player) {
+		System.out.println("Quelle carte souhaitez-vous échanger ?");
+		printHand(player);
+		int indexCardSelected = -1;
+		while (indexCardSelected < 0 || indexCardSelected > player.getHand().size())
+			indexCardSelected = sc.nextInt();
+
+		return player.getHand().get(indexCardSelected);
 	}
 }

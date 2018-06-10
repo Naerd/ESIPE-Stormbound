@@ -14,11 +14,4 @@ public interface Cards {
 	 */
 	public String getName();
 
-	/**
-	 * Specific string for the current class.
-	 * 
-	 * @return String to specified the current object.
-	 */
-	public String specificToString();
-
 }

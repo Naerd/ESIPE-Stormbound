@@ -1,16 +1,22 @@
 package model.cards.spell;
 
-import model.cards.Standard;
+import model.cards.Cards;
+import model.cards.Spell;
 
-public class Execution extends Standard {
+public class Execution implements Spell {
 
-	public Execution(String name, int strength, int move, int mana) {
-		super("", 0, 0, 3);
+	private String name;
+	private int mana;
+
+	public Execution() {
+		this.name = "Execution";
+		this.mana = 3;
 		// TODO Auto-generated constructor stub
 	}
 
-	public void effect() {
+	@Override
+	public void effect(Cards c1, Cards c2) {
+		// TODO Auto-generated method stub
 
 	}
-
 }

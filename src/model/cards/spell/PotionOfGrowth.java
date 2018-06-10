@@ -1,15 +1,21 @@
 package model.cards.spell;
 
-import model.cards.Standard;
+import model.cards.Cards;
+import model.cards.Spell;
 
-public class PotionOfGrowth extends Standard {
+public class PotionOfGrowth implements Spell {
 
-	public PotionOfGrowth(String name, int strength, int move, int mana) {
-		super("Potion of Growth", 0, 0, 4);
-		// TODO Auto-generated constructor stub
+	private final String name;
+	private final int mana;
+
+	public PotionOfGrowth(String name, int mana) {
+		this.name = "Potion of Growth";
+		this.mana = 4;
 	}
 
-	public void effect() {
+	@Override
+	public void effect(Cards c1, Cards c2) {
+		// TODO Auto-generated method stub
 
 	}
 

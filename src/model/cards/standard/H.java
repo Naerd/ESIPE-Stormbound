@@ -1,11 +1,18 @@
 package model.cards.standard;
 
-import model.cards.Standard;
+import model.cards.Cards;
+import model.cards.Unit;
 
-public class H extends Standard {
+public class H extends Unit {
 
-	public H(String name, int strength, int move, int mana) {
+	public H() {
 		super("H", 7, 1, 7);
+	}
+
+	@Override
+	public void effect(Cards c1, Cards c2) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

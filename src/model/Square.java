@@ -15,13 +15,13 @@ public class Square {
 		this.player = null;
 	}
 
-	public String toString() {
-		if (this.card == null) {
-			return "|      o      |";
-		} else {
-			return "|  " + this.card.toString() + "  |";
-		}
-	}
+	// public String toString() {
+	// if (this.card == null) {
+	// return "| o |";
+	// } else {
+	// return "| " + this.card.toString() + " |";
+	// }
+	// }
 
 	public int getX() {
 		return x;

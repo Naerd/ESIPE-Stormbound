@@ -1,7 +1,6 @@
 package model;
 
-import model.cards.Cards;
-import model.cards.Standard;
+import model.cards.Unit;
 
 /**
  * 
@@ -52,49 +51,51 @@ public class Board {
 	 * @param p
 	 * @return
 	 */
-	public boolean deplacement(Square init, Square obj, Player p) {
-		// if (this.board[x][y].getCard() != null) {
-		// System.out.println("Cette case est deja utilisee !");
-		// return false;
-		// } else if (!isEnnemyFront(x, y, p) && !isEnnemyLeft(x, y, p) &&
-		// !isEnnemyRight(x, y, p)) {
-		// this.board[x][y].addCard(card);
-		// return true;
-		// } else {
-		// if (p == Player.PLAYER1 && (y == 0 || y == 1)) {
-		// if (isEnnemyRight(x, y, p)) {
-		//
-		// }
-		// }
-		// this.board[x][y].addCard(card);
-		// return true;
-
-		if (this.getSquare(obj.getX(), obj.getY()))
-
-			if (this.getSquare(obj.getX(), obj.getY()).getPlayer() == p) {
-				System.out.println("Vous êtes déjà là");
-			}
-
-	}
-
-	public void attack(Standard c1, Standard c2) {
-		/* Tester si trop éloigné */
-		if(c2.getStrength())
-	}
-
-	// /**
-	// * @return
-	// */
-	// public Player getP1() {
-	// return p1;
-	// }
+	// public boolean deplacement(Square init, Square obj, Player p) {
+	// if (this.board[x][y].getCard() != null) {
+	// System.out.println("Cette case est deja utilisee !");
+	// return false;
+	// } else if (!isEnnemyFront(x, y, p) && !isEnnemyLeft(x, y, p) &&
+	// !isEnnemyRight(x, y, p)) {
+	// this.board[x][y].addCard(card);
+	// return true;
+	// } else {
+	// if (p == Player.PLAYER1 && (y == 0 || y == 1)) {
+	// if (isEnnemyRight(x, y, p)) {
 	//
-	// /**
-	// * @return
-	// */
-	// public Player getP2() {
-	// return p2;
 	// }
+	// }
+	// this.board[x][y].addCard(card);
+	// return true;
+
+	// if (this.getSquare(obj.getX(), obj.getY()))
+
+	// if (this.getSquare(obj.getX(), obj.getY()).getPlayer() == p) {
+	// System.out.println("Vous êtes déjà là");
+	// }
+
+	// }
+
+	public void attack(Unit c1, Unit c2) {
+		/* Tester si trop éloigné */
+		// if(c2.getStrength())
+	}
+
+	/**
+	 * Pour l'affichage sur le plateau
+	 * 
+	 * @return
+	 */
+	public Player getP1() {
+		return p1;
+	}
+
+	/**
+	 * @return
+	 */
+	public Player getP2() {
+		return p2;
+	}
 
 	/**
 	 * @param x

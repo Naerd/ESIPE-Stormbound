@@ -1,11 +1,11 @@
 package model.cards.structure;
 
-import model.cards.Standard;
+import model.cards.Structure;
 
-public class FortOfEbonrock extends Standard {
+public class FortOfEbonrock extends Structure {
 
-	public FortOfEbonrock(String name, int strength, int move, int mana) {
-		super("FortOfEbonrock", 4, 0, 3);
+	public FortOfEbonrock(String name, int strength, int mana) {
+		super("FortOfEbonrock", 4, 3);
 	}
 
 }

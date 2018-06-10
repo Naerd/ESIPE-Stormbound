@@ -39,8 +39,12 @@ public class Square {
 		return this.card;
 	}
 
-	public void addCard(Cards card) {
+	public void setCard(Cards card) {
 		this.card = card;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 
 }

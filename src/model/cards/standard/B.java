@@ -1,9 +1,18 @@
 package model.cards.standard;
 
-public class B extends Standard {
+import model.cards.Cards;
+import model.cards.Unit;
 
-	public B(String name, int strength, int move, int mana) {
+public class B extends Unit {
+
+	public B() {
 		super("B", 2, 1, 2);
+	}
+
+	@Override
+	public void effect(Cards c1, Cards c2) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

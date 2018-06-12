@@ -1,7 +1,7 @@
 package controller;
 
-import model.cards.Cards;
 import model.Square;
+import model.cards.Cards;
 
 public interface Management {
 

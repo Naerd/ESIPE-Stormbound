@@ -2,7 +2,7 @@ package model.cards;
 
 public abstract class Unit extends Structure implements Spell {
 
-	private final int move;
+	private int move;
 
 	public Unit(String name, int strength, int move, int mana) {
 		super(name, strength, mana);
@@ -29,6 +29,10 @@ public abstract class Unit extends Structure implements Spell {
 	@Override
 	public String toString() {
 		return specificToString();
+	}
+
+	public void setMove(int i) {
+		this.move = i;
 	}
 
 	// @Override

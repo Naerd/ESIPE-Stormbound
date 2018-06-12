@@ -32,41 +32,52 @@ public class Controller {
 		Player courant = p1;
 
 		boolean isOver = false;
+		// int frontLineP1, frontLineP2 = 0;
 
 		while (!isOver) {
+			board.deplacementEachRound();
+			board.updateFrontLine();
+			boolean round = true;
 			this.view.window(this.board);
 			int choice = this.view.choix(courant);
 			/* TODO : Montrer ma main */
-			switch (choice) {
-			case 1:
-				/* TODO : Exchange or place */
-				try {
-					/* TODO : Avant de faire ce choix : afficher les cartes et les cases libres */
-					Cards cardSelected = view.selectCardOnHand(courant);
-					Square squareSelected = view.selectSquareOnBoard(courant, board);
-					placeCardOnBoard(courant, squareSelected, cardSelected);
-					/* TODO : A voir si je pioche une carte seulement si je joue */
-					courant.drawACard();
-				} catch (IllegalStateException illegalStateException) {
+			while (round) {
+				switch (choice) {
+				case 1:
+					/* TODO : Exchange or place */
+					try {
+						Cards cardSelected = view.selectCardOnHand(courant);
+						try {
+							Square squareSelected = view.selectSquareOnBoard(courant, board);
+							placeCardOnBoard(courant, squareSelected, cardSelected);
+							courant.drawACard();
+							round = false;
+						} catch (IllegalArgumentException illegalArgumentException) {
+							System.out.println("Vous n'avez pas de cases disponibles");
+						}
+						/* TODO : A voir si je pioche une carte seulement si je joue */
+					} catch (IllegalStateException illegalStateException) {
+						break;
+					}
+					break;
+				case 2:
+					Cards cardExchanged = view.exchange(courant);
+					courant.exchange(cardExchanged);
+					/* TODO : Toujours au tour du courant */
+					break;
+				default:
+					/* TODO : Peut-on passer notre tour */
+					round = false;
 					break;
 				}
-				break;
-			case 2:
-				Cards cardExchanged = view.exchange(courant);
-				courant.exchange(cardExchanged);
-				break;
-			default:
-				/* TODO : Peut-on passer notre tour */
-				break;
-			}
-			if (courant.getMana() < 10)
-				courant.setMana(courant.getMana() + 1);
-			// deplacement(board);
-			if (courant == p1) {
-				/* A chaque tour augmenté le mana */
-				courant = p2;
-			} else {
-				courant = p1;
+				if (courant.getMana() < 10)
+					courant.setMana(courant.getMana() + 1);
+				if (courant == p1) {
+					/* A chaque tour augmenté le mana */
+					courant = p2;
+				} else {
+					courant = p1;
+				}
 			}
 		}
 

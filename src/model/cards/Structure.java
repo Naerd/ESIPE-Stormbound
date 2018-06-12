@@ -6,10 +6,8 @@ import java.util.Objects;
  * @author Guillaume GAUJAC
  *
  */
-public abstract class Structure implements Cards {
+public abstract class Structure extends CardClass {
 
-	private final String name;
-	private final int mana;
 	private int strength;
 
 	/**
@@ -23,8 +21,7 @@ public abstract class Structure implements Cards {
 	 *            Health points.
 	 */
 	public Structure(String name, int strength, int mana) {
-		this.mana = Objects.requireNonNull(mana);
-		this.name = Objects.requireNonNull(name);
+		super(name, mana);
 		this.strength = Objects.requireNonNull(strength);
 	}
 
@@ -34,16 +31,6 @@ public abstract class Structure implements Cards {
 
 	public void outch(int dmg) {
 		this.strength -= strength - dmg;
-	}
-
-	@Override
-	public int getMana() {
-		return this.mana;
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
 	}
 
 	public int getStrength() {

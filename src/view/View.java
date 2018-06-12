@@ -48,6 +48,11 @@ public class View {
 				}
 				System.out.print('|');
 			}
+			// System.out.print("\t");
+			// if (line == b.getFrontLineP2())
+			// couleur("<=", Player.PLAYER2);
+			// if (line == b.getFrontLineP1())
+			// couleur("<=", Player.PLAYER1);
 			System.out.println();
 		}
 		System.out.println();
@@ -70,7 +75,6 @@ public class View {
 
 	public int choix(Player player) {
 		System.out.println("\nPlayer :" + player.getName());
-
 		StringBuilder handSB = new StringBuilder();
 		handSB.append("\nHAND :\n");
 		for (Cards card : player.getHand())
@@ -121,18 +125,27 @@ public class View {
 		StringBuilder placeCardSB = new StringBuilder();
 		placeCardSB.append("Où souhaitez-vous placer votre carte ?\nCes colonnes sont libres ([x,y]):\n");
 		/* Afficher les col libre sur la premiere ligne */
-		int line = 0;
-		if (player == Player.PLAYER1) {
-			line = 4;
-		}
+		int frontLinePlayer = board.getFrontLineP2();
 		ArrayList<Square> freeSquares = new ArrayList<Square>();
 		int numSquarefreeSquares = 0;
-		for (int col = 0; col < 4; col++) {
-			if (board.getSquare(line, col).getCard() == null) {
-				freeSquares.add(new Square(line, col));
-				placeCardSB.append(numSquarefreeSquares).append("- [").append(line).append(',').append(col)
-						.append("] ; ");
-				numSquarefreeSquares++;
+		for (int line = 0; line < 5; line++) {
+			for (int col = 0; col < 4; col++) {
+				if (player == Player.PLAYER1) {
+					frontLinePlayer = board.getFrontLineP1();
+					if (board.getSquare(line, col).getCard() == null && line >= frontLinePlayer) {
+						freeSquares.add(new Square(line, col));
+						placeCardSB.append(numSquarefreeSquares).append("- [").append(line).append(',').append(col)
+								.append("] ;\n");
+						numSquarefreeSquares++;
+					}
+				} else {
+					if (board.getSquare(line, col).getCard() == null && line <= frontLinePlayer) {
+						freeSquares.add(new Square(line, col));
+						placeCardSB.append(numSquarefreeSquares).append("- [").append(line).append(',').append(col)
+								.append("] ;\n");
+						numSquarefreeSquares++;
+					}
+				}
 			}
 		}
 		/* TODO: Verifier si on peut placer sinon on passer notre tour (plus haut) */
@@ -147,6 +160,39 @@ public class View {
 		} while (selected < 0 || selected > numSquarefreeSquares);
 		return freeSquares.get(selected);
 	}
+
+	/* Prendre dans le deck */
+	// StringBuilder placeCardSB = new StringBuilder();
+	// placeCardSB.append("Où souhaitez-vous placer votre carte ?\nCes colonnes sont
+	// libres ([x,y]):\n");
+	// /* Afficher les col libre sur la premiere ligne */
+	// int line = 0;
+	// if (player == Player.PLAYER1) {
+	// line = 4;
+	// }
+	// ArrayList<Square> freeSquares = new ArrayList<Square>();
+	// int numSquarefreeSquares = 0;
+	// for (int col = 0; col < 4; col++) {
+	// if (board.getSquare(line, col).getCard() == null) {
+	// freeSquares.add(new Square(line, col));
+	// placeCardSB.append(numSquarefreeSquares).append("-
+	// [").append(line).append(',').append(col)
+	// .append("] ; ");
+	// numSquarefreeSquares++;
+	// }
+	// }
+	// /* TODO: Verifier si on peut placer sinon on passer notre tour (plus haut) */
+	// if (numSquarefreeSquares == 0) {
+	// throw new IllegalStateException();
+	// }
+	// placeCardSB.append('\n');
+	// System.out.println(placeCardSB.toString());
+	// int selected = -1;
+	// do {
+	// selected = sc.nextInt();
+	// } while (selected < 0 || selected > numSquarefreeSquares);
+	// return freeSquares.get(selected);
+	// }
 
 	/**
 	 * Obsolete : Les stats doivent être visible dès le départ

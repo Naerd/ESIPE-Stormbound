@@ -11,8 +11,6 @@ public class D extends Unit {
 
 	@Override
 	public void effect(Cards c1, Cards c2) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

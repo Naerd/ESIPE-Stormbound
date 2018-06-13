@@ -35,8 +35,10 @@ public class Controller {
 		// int frontLineP1, frontLineP2 = 0;
 
 		while (!isOver) {
-			board.deplacementEachRound();
+			board.generalMove(courant);
 			board.updateFrontLine();
+			System.out.println("Front line A = " + board.getFrontLineP1());
+			System.out.println("Front line B = " + board.getFrontLineP2());
 			boolean round = true;
 			this.view.window(this.board);
 			int choice = this.view.choix(courant);
@@ -49,7 +51,8 @@ public class Controller {
 						Cards cardSelected = view.selectCardOnHand(courant);
 						try {
 							Square squareSelected = view.selectSquareOnBoard(courant, board);
-							placeCardOnBoard(courant, squareSelected, cardSelected);
+							board.setUnit(squareSelected, cardSelected, courant);
+							// placeCardOnBoard(courant, squareSelected, cardSelected);
 							courant.drawACard();
 							round = false;
 						} catch (IllegalArgumentException illegalArgumentException) {

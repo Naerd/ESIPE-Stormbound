@@ -1,7 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-
 import model.cards.Cards;
 import model.cards.Unit;
 
@@ -32,87 +30,113 @@ public class Board {
 		}
 		this.frontLineP1 = 4;
 		this.frontLineP2 = 0;
-
 	}
 
-	/* TODO : Monter le test pour voir quel joueur est devant (factoriser) */
-	public void deplacement(Square square) {
-		// Unit cardOnSquare = (Unit) square.getCard();
+	public void move(Square square) {
 		Player playerOnSquare = square.getPlayer();
-		int directionOnX = square.getX();
-		if (playerOnSquare != null) {
-			if (playerOnSquare.equals(Player.PLAYER1)) {
-				if (directionOnX - 1 >= 0) {
-					directionOnX = square.getX() - 1;
+		int x_square = square.getX();
+		int y_square = square.getY();
+		if (playerOnSquare.equals(Player.PLAYER1)) {
+			this.getSquare((x_square - 1), y_square).setCard(square.getCard());
+			this.getSquare((x_square - 1), y_square).setPlayer(playerOnSquare);
+		} else {
+			this.getSquare((x_square + 1), y_square).setCard(square.getCard());
+			this.getSquare((x_square + 1), y_square).setPlayer(playerOnSquare);
+		}
+		this.getSquare(x_square, y_square).setPlayer(null);
+		this.getSquare(x_square, y_square).setCard(null);
+	}
+
+	public void setUnit(Square square, Cards card, Player player) {
+		int moveUnit = 0;
+		int current_x = square.getX();
+		int current_y = square.getY();
+		Square current_square = square;
+		if (card instanceof Unit) {
+			moveUnit = ((Unit) card).getMove();
+		}
+		if (square.getCard() != null) {
+			throw new IllegalStateException("There is already a card in there!");
+		} else if (!this.isInBoard(current_x, current_y)) {
+			throw new IllegalArgumentException("This action canno't be achieved, wrong coordinates");
+		} else {
+			this.getSquare(current_x, current_y).setCard(card);
+			this.getSquare(current_x, current_y).setPlayer(player);
+		}
+		while (moveUnit != 0) {
+			if (!isEnnemyFront(current_x, current_y, player) && !isEnnemyLeft(current_x, current_y, player)
+					&& !isEnnemyRight(current_x, current_y, player)) {
+				move(this.getSquare(current_x, current_y));
+			} else if (isEnnemyFront(current_x, current_y, player)) {
+				if (player == Player.PLAYER1) {
+					// this.attack(FrontOfP1);
+				} else {
+					// this.attack(FrontOfP2);
 				}
-			} else {
-				if (directionOnX + 1 < 5) {
-					directionOnX = square.getX() + 1;
-				}
-			}
-			if (getSquare(directionOnX, square.getY()).getPlayer() != null) {
-				if (getSquare(directionOnX, square.getY()).getPlayer() == playerOnSquare) {
+				return;
+			} else if (isEnnemyLeft(current_x, current_y, player) && isEnnemyRight(current_x, current_y, player)) {
+				if (player == Player.PLAYER1) {
+					if (current_y == 1) {
+						// this.attack(RightOfP1);
+					} else {
+						// this.attack(LeftOfP1);
+					}
 					return;
 				} else {
-					/* TODO : Attaque */
-
+					if (current_y == 1) {
+						// this.attack(LeftOfP2);
+					} else {
+						// this.attack(RightOfP2);
+					}
+					return;
 				}
-			} else {
-				getSquare(directionOnX, square.getY()).setCard(square.getCard());
-				getSquare(directionOnX, square.getY()).setPlayer(playerOnSquare);
-				getSquare(square.getX(), square.getY()).setPlayer(null);
-				getSquare(square.getX(), square.getY()).setCard(null);
+			} else if (isEnnemyLeft(current_x, current_y, player)) {
+				if (player == Player.PLAYER1) {
+					// this.attack(LeftOfP1);
+				} else {
+					// this.attack(LeftOfP2);
+				}
+				return;
+			} else if (isEnnemyRight(current_x, current_y, player)) {
+				if (player == Player.PLAYER1) {
+					// this.attack(RightOfP1);
+				} else {
+					// this.attack(RightOfP2);
+				}
+				return;
 			}
+			if (player == Player.PLAYER1) {
+				current_x--;
+			} else {
+				current_x++;
+			}
+			square = this.getSquare(current_x, current_y);
+			moveUnit--;
 		}
 	}
 
-	/**
-	 * @return
-	 */
-	public void deplacementEachRound() {
-		ArrayList<Square> alreadyDeplace = new ArrayList<Square>();
-		/* Joueur 2 */
-		for (Square[] squares : board) {
-			for (Square square : squares) {
-				System.out.println("Case [" + square.getX() + "," + square.getY());
-				Player playerOnCard = square.getPlayer();
-				/* Ce premier test pour ne pas planter */
-				if (playerOnCard != null) {
-					/* TODO : Gerer les "unit" et les "structures" */
-					if (playerOnCard.equals(Player.PLAYER2)) {
-						Cards cardTested = square.getCard();
-						if (!(alreadyDeplace.contains(square)) && (cardTested instanceof Unit)) {
-							while (((Unit) cardTested).getMove() > -1) {
-								int movePoint = ((Unit) cardTested).getMove();
-								deplacement(square);
-								((Unit) cardTested).setMove(movePoint--);
-							}
-							((Unit) cardTested).setMove(0);
-							alreadyDeplace.add(new Square(square.getX() + 1, square.getY()));
-						}
-					}
-				}
-			}
-		}
-		/* Joueur 1 */
-		for (int i = 4; i == 0; i--) {
+	public void generalMove(Player player) {
+		Square current_square = null;
+		int dmg = 0;
+		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 4; j++) {
-				System.out.println("Case [" + getSquare(i, j).getX() + "," + getSquare(i, j).getY());
-				Player playerOnCard = getSquare(i, j).getPlayer();
-				/* Ce premier test pour ne pas planter */
-				if (playerOnCard != null) {
-					/* TODO : Gerer les "unit" et les "structures" */
-					if (playerOnCard.equals(Player.PLAYER1)) {
-						Cards cardTested = getSquare(i, j).getCard();
-						if (!(alreadyDeplace.contains(getSquare(i, j))) && (cardTested instanceof Unit)) {
-							while (((Unit) cardTested).getMove() > 0) {
-								int movePoint = ((Unit) cardTested).getMove();
-								deplacement(getSquare(i, j));
-								((Unit) cardTested).setMove(movePoint--);
-							}
-							((Unit) cardTested).setMove(0);
-
-							alreadyDeplace.add(new Square(getSquare(i, j).getX() - 1, getSquare(i, j).getY()));
+				current_square = this.getSquare(i, j);
+				if (current_square.getCard() != null) {
+					if (current_square.getPlayer() == player) {
+						if (player.equals(Player.PLAYER1) && current_square.getX() == 0) {
+							dmg = ((Unit) current_square.getCard()).getStrength();
+							this.p2.outch(dmg);
+							current_square.setCard(null);
+							current_square.setPlayer(null);
+						} else if (player.equals(Player.PLAYER2) && current_square.getX() == 4) {
+							dmg = ((Unit) current_square.getCard()).getStrength();
+							this.p1.outch(dmg);
+							current_square.setCard(null);
+							current_square.setPlayer(null);
+						} else if (isEnnemyFront(i, j, player)) {
+							// this.attack(inFrontOf)
+						} else {
+							move(current_square);
 						}
 					}
 				}
@@ -121,6 +145,8 @@ public class Board {
 	}
 
 	public void updateFrontLine() {
+		setFrontLineP1(4);
+		setFrontLineP2(0);
 		for (Square[] squares : board) {
 			for (Square square : squares) {
 				Player playerOnSquare = square.getPlayer();
@@ -138,9 +164,11 @@ public class Board {
 				}
 			}
 		}
+
 	}
 
-	public void attack(Unit c1, Unit c2) {
+	public void attack(Square square, Player player) {
+
 		/* Tester si trop éloigné */
 		// if(c2.getStrength())
 	}
@@ -167,6 +195,14 @@ public class Board {
 
 	public int getFrontLineP2() {
 		return this.frontLineP2;
+	}
+
+	public void setFrontLineP1(int fp) {
+		this.frontLineP1 = fp;
+	}
+
+	public void setFrontLineP2(int fp) {
+		this.frontLineP2 = fp;
 	}
 
 	/**
@@ -252,7 +288,4 @@ public class Board {
 				return false;
 		}
 	}
-
-	// public boolean isInBase(int x, int y);
-
 }

@@ -14,4 +14,6 @@ public interface Cards {
 	 */
 	public String getName();
 
+	public void outch(int dmg);
+
 }

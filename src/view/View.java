@@ -7,6 +7,7 @@ import model.Board;
 import model.Player;
 import model.Square;
 import model.cards.Cards;
+import model.cards.Unit;
 
 public class View {
 
@@ -16,12 +17,12 @@ public class View {
 		/* TODO : Effacer la console */
 		System.out.println(b.getP2().toString());
 		System.out.print("  ");
-		for (int showNumberCol = 0; showNumberCol < 5; showNumberCol++) {
-			System.out.print(showNumberCol + "  ");
+		for (int showNumberCol = 0; showNumberCol < 4; showNumberCol++) {
+			System.out.print("    " + showNumberCol + "   ");
 		}
 		System.out.print("\n" + "  ");
-		for (int underscore = 0; underscore < 5; underscore++) {
-			System.out.print("-- ");
+		for (int underscore = 0; underscore < 4; underscore++) {
+			System.out.print(" -------");
 		}
 		System.out.println();
 
@@ -32,28 +33,30 @@ public class View {
 
 	private void board(Board b) {
 		for (int line = 0; line < 5; line++) {
-			System.out.print(line + "|");
+			System.out.print(line + " |");
 			for (int col = 0; col < 4; col++) {
 				Square square = b.getSquare(line, col);
 				Player p = square.getPlayer();
 				/* TODO : A changer */
 				if (square.getCard() != null) {
 					if (p.equals(Player.PLAYER1)) {
-						couleur(square.getCard().getName().substring(0, 1).toUpperCase(), p);
+						couleur(" " + square.getCard().getName().substring(0, 1).toUpperCase() + " : "
+								+ ((Unit) square.getCard()).getStrength(), p);
 					} else {
-						couleur(square.getCard().getName().substring(0, 1).toLowerCase(), p);
+						couleur(" " + square.getCard().getName().substring(0, 1).toLowerCase() + " : "
+								+ ((Unit) square.getCard()).getStrength(), p);
 					}
 				} else {
-					System.out.print("  ");
+					System.out.print("       ");
 				}
-				System.out.print('|');
+				System.out.print("|");
 			}
 			// System.out.print("\t");
 			// if (line == b.getFrontLineP2())
 			// couleur("<=", Player.PLAYER2);
 			// if (line == b.getFrontLineP1())
 			// couleur("<=", Player.PLAYER1);
-			System.out.println();
+			System.out.println("");
 		}
 		System.out.println();
 	}
@@ -163,7 +166,8 @@ public class View {
 
 	/* Prendre dans le deck */
 	// StringBuilder placeCardSB = new StringBuilder();
-	// placeCardSB.append("Où souhaitez-vous placer votre carte ?\nCes colonnes sont
+	// placeCardSB.append("Où souhaitez-vous placer votre carte ?\nCes colonnes
+	// sont
 	// libres ([x,y]):\n");
 	// /* Afficher les col libre sur la premiere ligne */
 	// int line = 0;

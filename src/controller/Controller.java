@@ -81,6 +81,14 @@ public class Controller {
 				} else {
 					courant = p1;
 				}
+				if (p1.getHealth() <= 0) {
+					System.out.println("\n\nPLAYER 2 WON !!!");
+					isOver = true;
+				}
+				if (p2.getHealth() <= 0) {
+					System.out.println("\n\nPLAYER 1 WON !!!");
+					isOver = true;
+				}
 			}
 		}
 

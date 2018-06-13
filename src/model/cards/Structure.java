@@ -30,7 +30,7 @@ public abstract class Structure extends CardClass {
 	}
 
 	public void outch(int dmg) {
-		this.strength -= strength - dmg;
+		this.strength -= dmg;
 	}
 
 	public int getStrength() {

@@ -13,11 +13,6 @@ public abstract class Unit extends Structure implements Spell {
 		return this.move;
 	}
 
-	// public String toString() {
-	// return this.player.getName() + ":(" + this.strength + ";" + this.move + ";" +
-	// this.mana + ")";
-	// }
-
 	public String specificToString() {
 		return "Name : " + super.getName() + " ; Mana : " + super.getMana() + " ; Move :" + getMove() + " ; Strength : "
 				+ super.getStrength();
@@ -34,8 +29,4 @@ public abstract class Unit extends Structure implements Spell {
 	public void setMove(int i) {
 		this.move = i;
 	}
-
-	// @Override
-	// public abstract void effect(Cards c1, Cards c2);
-
 }

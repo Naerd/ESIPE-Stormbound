@@ -28,11 +28,8 @@ public class Controller {
 	public void game() {
 		Player p1 = Player.PLAYER1;
 		Player p2 = Player.PLAYER2;
-
 		Player courant = p1;
-
 		boolean isOver = false;
-		// int frontLineP1, frontLineP2 = 0;
 
 		while (!isOver) {
 			board.generalMove(courant);
@@ -52,7 +49,6 @@ public class Controller {
 						try {
 							Square squareSelected = view.selectSquareOnBoard(courant, board);
 							board.setUnit(squareSelected, cardSelected, courant);
-							// placeCardOnBoard(courant, squareSelected, cardSelected);
 							courant.drawACard();
 							round = false;
 						} catch (IllegalArgumentException illegalArgumentException) {
@@ -91,26 +87,5 @@ public class Controller {
 				}
 			}
 		}
-
 	}
-
-	/**
-	 * @param player
-	 *            The current player who want to place a card.
-	 * @param square
-	 *            The case where we want the player want to place his card. We
-	 *            change the value of the current player in specification of the
-	 *            square.
-	 * @param card
-	 *            The card we want to place.
-	 */
-	public void placeCardOnBoard(Player player, Square square, Cards card) {
-		// if (p == board.getSquare(s1.getX(), s1.getY()).getPlayer()) {
-		// return board.setUnit(,);
-		// }
-		this.board.getSquare(square.getX(), square.getY()).setCard(card);
-		this.board.getSquare(square.getX(), square.getY()).setPlayer(player);
-		player.getHand().remove(player.getHand().indexOf(card));
-	}
-
 }

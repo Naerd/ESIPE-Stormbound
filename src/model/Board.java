@@ -5,7 +5,6 @@ import model.cards.Unit;
 
 /**
  * 
- * Base Ã  dÃ©truire.
  * 
  * @author Axel ROSTAGNY
  * @author Guillaume GAUJAC
@@ -15,8 +14,6 @@ public class Board {
 	private Square[][] board;
 	private Player p1;
 	private Player p2;
-
-	/* TODO : A mettre dans player */
 	private int frontLineP1, frontLineP2;
 
 	public Board() {
@@ -35,8 +32,8 @@ public class Board {
 	/**
 	 * @param square
 	 * 
-	 *            Permet de déplacer une unité de 1 case vers l'avant, en fonction
-	 *            du joueur sur la case passée en paramètre.
+	 *            Move a Unit of 1 square towards ennemy base, depends on the player
+	 *            in parameter.
 	 */
 	public void move(Square square) {
 		Player playerOnSquare = square.getPlayer();
@@ -58,12 +55,11 @@ public class Board {
 	 * @param card
 	 * @param player
 	 * 
-	 *            Permet de placer une unité que l'on vient de jouer et de lui faire
-	 *            faire ses mouvements initiaux et/ou son action. Ainsi: Tant qu'il
-	 *            n'y a pas d'ennemi et qu'on a encore du déplacement, on déplace
-	 *            l'unité de 1 vers la base ennemie. Si, pendant cette boucle, on
-	 *            rencontre un ennemi, on fait attaquer cette carte et on finit
-	 *            l'action.
+	 * 
+	 *            Placing unit for the first time in board and doing its movement
+	 *            and actions. While there is no ennemy in front and it has still
+	 *            movement points -> move of 1 square toward ennemy base If there is
+	 *            an ennemy : attack it and finish the action of setting unit/
 	 */
 	public void setUnit(Square square, Cards card, Player player) {
 		int moveUnit = 0;
@@ -73,7 +69,7 @@ public class Board {
 		if (card instanceof Unit) {
 			moveUnit = ((Unit) card).getMove();
 		}
-		if (square.getCard() != null) {
+		if (current_square.getCard() != null) {
 			throw new IllegalStateException("There is already a card in there!");
 		} else if (!this.isInBoard(current_x, current_y)) {
 			throw new IllegalArgumentException("This action canno't be achieved, wrong coordinates");
@@ -138,40 +134,18 @@ public class Board {
 			} else {
 				current_x++;
 			}
-			square = this.getSquare(current_x, current_y);
+			current_square = this.getSquare(current_x, current_y);
 			moveUnit--;
 		}
 	}
 
 	/**
 	 * @param player
-	 *            Fonction qui s'effectue à chaque changement de tour en prenant en
-	 *            compte le joueur courant. On parcourt le tableau et, pour chaque
-	 *            unité appartenant au joueur, on la déplace de 1 ou on la fait
-	 *            attaquer s'il y a un ennemi en face d'elle.
-	 */
-
-	/*
-	 * public void generalMove(Player player) { Square current_square = null; int
-	 * dmg = 0; int[][] tabAlreadyMoved = initTabMoves(5, 4); for (int i = 0; i < 5;
-	 * i++) { for (int j = 0; j < 4; j++) { current_square = this.getSquare(i, j);
-	 * if (current_square.getCard() != null) { if (tabAlreadyMoved[i][j] != 1) { if
-	 * (current_square.getPlayer() == player) { if (player.equals(Player.PLAYER1) &&
-	 * current_square.getX() == 0) { dmg = ((Unit)
-	 * current_square.getCard()).getStrength(); this.p2.outch(dmg);
-	 * current_square.setCard(null); current_square.setPlayer(null); } else if
-	 * (player.equals(Player.PLAYER2) && current_square.getX() == 4) { dmg = ((Unit)
-	 * current_square.getCard()).getStrength(); this.p1.outch(dmg);
-	 * current_square.setCard(null); current_square.setPlayer(null); } else if
-	 * (isEnnemyFront(i, j, player)) { if (player.equals(Player.PLAYER1)) {
-	 * this.attack(current_square, this.getSquare(i - 1, j), player); if
-	 * (this.getSquare(i - 1, j).getPlayer().equals(player)) { tabAlreadyMoved[i -
-	 * 1][j] = 1; } } else { this.attack(current_square, this.getSquare(i + 1, j),
-	 * player); if (this.getSquare(i + 1, j).getPlayer().equals(player)) {
-	 * tabAlreadyMoved[i + 1][j] = 1; } }
 	 * 
-	 * } else { if (player.equals(Player.PLAYER2)) { tabAlreadyMoved[i + 1][j] = 1;
-	 * } move(current_square); } } } } } } }
+	 *            Do every automatic movement of all the units of a player. Read
+	 *            through a table and for each unit of the player, perform a move.
+	 *            If there is an ennemy, action of attacking.
+	 * 
 	 */
 
 	public void generalMove(Player player) {
@@ -226,10 +200,9 @@ public class Board {
 	}
 
 	/**
-	 * A chaque tour, on met à jour la ligne de front, qui permet de savoir où l'on
-	 * peut jouer nos unités. Si nous avons une unité positionnée à 1 ligne de la
-	 * base ennemie, on pourra placer une autre unité juste avant cette ligne, c'est
-	 * à dire sur nos 4 premières lignes.
+	 * 
+	 * Each turn, update the front line of each side to know where the player can
+	 * put his units.
 	 */
 	public void updateFrontLine() {
 		setFrontLineP1(4);
@@ -259,16 +232,15 @@ public class Board {
 	 * @param target
 	 * @param player
 	 * 
-	 *            Fonction d'attaque, en action lorsqu'il y a un ennemi et qu'on
-	 *            peut l'attaquer. 3 cas sont disponibles ici: - L'attaquant et le
-	 *            défenseur ont les meme points de force, ils s'entretuent donc et
-	 *            les deux unités disparaissent du plateau. - L'attaquant est plus
-	 *            fort que le défenseur, auquel cas on retranche les points de vie
-	 *            du défenseur a l'attaquant, celui-ci prend la place du défenseur,
-	 *            et le défenseur est anéanti du plateau. - L'attaquant est plus
-	 *            faible que le défenseur: ici, l'attaquand va au suicide et est
-	 *            anéanti mais inflige des dégats au défenseur. Le défenseur ne
-	 *            prend pas la place de l'attaquant
+	 * 
+	 *            Function of attacking, when we have enough movement and there is
+	 *            an reachable ennemy. 3 cases : 1) Attacker and defender share the
+	 *            same strength --> killing each other and both card are destroyed.
+	 *            2) Attacker strength > defender strength --> Destroy the defender,
+	 *            damaging itself by defender strength but survive, and take the
+	 *            defender's place on board. 3) Attacker strength < defender
+	 *            strength --> Attacker is destroyed, damage done to defender, and
+	 *            defender don't move.
 	 */
 	public void attack(Square attacker, Square target, Player player) {
 		int dmg = ((Unit) attacker.getCard()).getStrength();
@@ -296,7 +268,6 @@ public class Board {
 	}
 
 	/**
-	 * Pour l'affichage sur le plateau
 	 * 
 	 * @return
 	 */
@@ -331,6 +302,8 @@ public class Board {
 	 * @param x
 	 * @param y
 	 * @return
+	 * 
+	 * 		Check if the coordinates are in the board
 	 */
 	public boolean isInBoard(int x, int y) {
 		/** TODO : le faire avec les excpetions */
@@ -347,26 +320,14 @@ public class Board {
 		return board[x][y];
 	}
 
-	public Player getPlayerOnSquare(Square square) {
-		return board[square.getX()][square.getY()].getPlayer();
-	}
-
 	/**
-	 * @param x
-	 * @param y
+	 * @param square
 	 * @return
 	 * 
-	 * 		Fonction intermédiaire, initialise le tableau pour savoir si on a
-	 *         déjà déplacé une unité, dans la fonction generalMove()
+	 * 		get the player that is on the square in parameter
 	 */
-	public int[][] initTabMoves(int x, int y) {
-		int[][] tab = new int[x][y];
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 4; j++) {
-				tab[i][j] = 0;
-			}
-		}
-		return tab;
+	public Player getPlayerOnSquare(Square square) {
+		return board[square.getX()][square.getY()].getPlayer();
 	}
 
 	/**
@@ -375,8 +336,9 @@ public class Board {
 	 * @param p
 	 * @return
 	 * 
-	 * 		Fonction intermédiaire, renvoyant vrai si un ennemi est détecté à
-	 *         gauche (en fonction du joueur)
+	 * 
+	 * 		Intermediate function : checked if an ennemy is on the left of the
+	 *         square(x,y). Change depends on current_player in parameter.
 	 */
 	public boolean isEnnemyLeft(int x, int y, Player p) {
 		if (p == Player.PLAYER1) {
@@ -398,8 +360,8 @@ public class Board {
 	 * @param p
 	 * @return
 	 * 
-	 * 		Fonction intermédiaire, renvoyant vrai si un ennemi est détecté à
-	 *         droite (en fonction du joueur)
+	 * 		Intermediate function : checked if an ennemy is on the right of the
+	 *         square(x,y). Change depends on current_player in parameter.
 	 */
 	public boolean isEnnemyRight(int x, int y, Player p) {
 		if (p == Player.PLAYER1) {
@@ -421,11 +383,11 @@ public class Board {
 	 * @param p
 	 * @return
 	 * 
-	 * 		Fonction intermédiaire, renvoyant vrai si un ennemi est détecté en
-	 *         face (en fonction du joueur)
+	 * 		Intermediate function : checked if an ennemy is in front of the
+	 *         square(x,y). Change depends on current_player in parameter.
 	 */
 	public boolean isEnnemyFront(int x, int y, Player p) {
-		if (p == p.PLAYER1) {
+		if (p == Player.PLAYER1) {
 			if (isInBoard(x - 1, y) && this.board[x - 1][y].getCard() != null) {
 				return true;
 			} else
